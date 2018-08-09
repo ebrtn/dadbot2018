@@ -168,7 +168,7 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
             if(liftUp){
                 liftMotor.setPower(LIFT_POWER);
             } else if (liftDown) {
-                if (liftLimit.getState() == true){
+                if (liftLimit.getState() == false){
                     liftMotor.setPower(0);
                 } else {
                     liftMotor.setPower(-LIFT_POWER);
