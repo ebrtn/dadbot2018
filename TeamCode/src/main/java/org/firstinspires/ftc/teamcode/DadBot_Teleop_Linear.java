@@ -72,7 +72,8 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
     public static final double CLAW_SPEED  = 0.005 ;
     public static final double CLAW_OPEN_LIMIT_DELTA  = .1;
     public static final double CLAW_CLOSE_LIMIT_DELTA = .15;
-    public static final double LIFT_POWER = 0.3;
+    public static final double LIFT_POWER_UP = 1;
+    public static final double LIFT_POWER_DOWN = 0.3;
 
     @Override
     public void runOpMode() {
@@ -102,6 +103,7 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
         rightDrive.setDirection(DcMotor.Direction.FORWARD);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -166,12 +168,12 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
 
             //  Send calculated power to lift motor
             if(liftUp){
-                liftMotor.setPower(LIFT_POWER);
+                liftMotor.setPower(LIFT_POWER_UP);
             } else if (liftDown) {
                 if (liftLimit.getState() == false){
                     liftMotor.setPower(0);
                 } else {
-                    liftMotor.setPower(-LIFT_POWER);
+                    liftMotor.setPower(-LIFT_POWER_DOWN);
                 }
             } else {
                 liftMotor.setPower(0);
