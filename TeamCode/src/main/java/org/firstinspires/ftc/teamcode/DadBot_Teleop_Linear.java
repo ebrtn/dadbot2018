@@ -74,6 +74,8 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
     public static final double CLAW_CLOSE_LIMIT_DELTA = .15;
     public static final double LIFT_POWER_UP = 1;
     public static final double LIFT_POWER_DOWN = 0.3;
+    public static final double DRIVE_SPEED_FACTOR_FAST = 1;
+    public static final double DRIVE_SPEED_FACTOR_SLOW = .4;
 
     @Override
     public void runOpMode() {
@@ -94,8 +96,8 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         liftMotor.setPower(0);
-        leftClaw.setPosition(MID_LEFT_SERVO);
-        rightClaw.setPosition(MID_RIGHT_SERVO);
+        //leftClaw.setPosition(MID_LEFT_SERVO);
+        //rightClaw.setPosition(MID_RIGHT_SERVO);
         liftLimit.setMode(DigitalChannel.Mode.INPUT);
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -113,6 +115,7 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
         // Drive motors
         double leftPower;
         double rightPower;
+        double powerFactor = DRIVE_SPEED_FACTOR_FAST;
 
         // Lift
         boolean liftUp;
@@ -125,6 +128,10 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
         boolean clawOpen;
         double leftClawPosition = MID_LEFT_SERVO;
         double rightClawPosition = MID_RIGHT_SERVO;
+
+        boolean BButtonState = false;
+        boolean PrevBButtonState = false;
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
@@ -144,6 +151,9 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
             leftPower  = -gamepad1.left_stick_y ;
             rightPower = -gamepad1.right_stick_y ;
 
+            PrevBButtonState = BButtonState;
+            BButtonState = gamepad1.b;
+
             // Lift controller
             liftUp = gamepad1.right_bumper;
             liftDownFloat = gamepad1.right_trigger;
@@ -162,9 +172,19 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
             }
             clawOpen = gamepad1.left_bumper;
 
+            // Look for power factor change
+            if(!BButtonState && PrevBButtonState){
+                if(powerFactor==DRIVE_SPEED_FACTOR_FAST){
+                    powerFactor = DRIVE_SPEED_FACTOR_SLOW;
+                } else {
+                    powerFactor= DRIVE_SPEED_FACTOR_FAST;
+                }
+            }
+
+
             // Send calculated power to wheels
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
+            leftDrive.setPower(leftPower*powerFactor);
+            rightDrive.setPower(rightPower*powerFactor);
 
             //  Send calculated power to lift motor
             if(liftUp){

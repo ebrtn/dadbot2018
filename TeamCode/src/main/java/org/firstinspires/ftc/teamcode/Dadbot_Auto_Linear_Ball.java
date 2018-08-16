@@ -30,15 +30,11 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This file illustrates the concept of driving a path based on encoder counts.
@@ -67,9 +63,9 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Dadbot_Auto_Linear_Block", group="Pushbot")
-@Disabled
-public class Dadbot_Auto_Linear extends LinearOpMode {
+@Autonomous(name="Dadbot_Auto_Linear_Ball", group="Pushbot")
+//@Disabled
+public class Dadbot_Auto_Linear_Ball extends LinearOpMode {
 
     /* Declare OpMode members. */
     private ElapsedTime     runtime = new ElapsedTime();
@@ -121,8 +117,8 @@ public class Dadbot_Auto_Linear extends LinearOpMode {
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         liftMotor.setPower(0);
-        leftClaw.setPosition(MID_LEFT_SERVO);
-        rightClaw.setPosition(MID_RIGHT_SERVO);
+//        leftClaw.setPosition(MID_LEFT_SERVO);
+//        rightClaw.setPosition(MID_RIGHT_SERVO);
         liftLimit.setMode(DigitalChannel.Mode.INPUT);
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -149,12 +145,12 @@ public class Dadbot_Auto_Linear extends LinearOpMode {
         // Close Claw
         leftClaw.setPosition(MID_LEFT_SERVO+CLAW_CLOSE_LIMIT_DELTA);
         rightClaw.setPosition(MID_RIGHT_SERVO-CLAW_CLOSE_LIMIT_DELTA);
-        sleep(1000);
+        sleep(500);
 
 
         // Lift Claw
         liftMotor.setPower(LIFT_POWER_UP);
-        sleep(1500);
+        sleep(6100);
         liftMotor.setPower(0);
 
         // Step through each leg of the path,
@@ -166,7 +162,7 @@ public class Dadbot_Auto_Linear extends LinearOpMode {
 
         // Open Claw
         leftClaw.setPosition(MID_LEFT_SERVO-CLAW_OPEN_LIMIT_DELTA);
-        rightClaw.setPosition(MID_LEFT_SERVO+CLAW_OPEN_LIMIT_DELTA);
+        rightClaw.setPosition(MID_RIGHT_SERVO+CLAW_OPEN_LIMIT_DELTA);
         sleep(1000);     // pause for servos to move
 
         telemetry.addData("Path", "Complete");
