@@ -75,8 +75,10 @@ public class Dadbot_Auto_Linear_Ball extends LinearOpMode {
     static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
     static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
                                                       (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.4;
+    static final double     DRIVE_SPEED             = 0.2;
     static final double     TURN_SPEED              = 0.4;
+    static final long       LIFT_HEIGHT             = 5600;   //  in ms
+    static final double     DRIVE_FWD_DISTANCE      = 60;     // inches
 
 
     // Declare OpMode members.
@@ -150,15 +152,17 @@ public class Dadbot_Auto_Linear_Ball extends LinearOpMode {
 
         // Lift Claw
         liftMotor.setPower(LIFT_POWER_UP);
-        sleep(6100);
+        sleep(LIFT_HEIGHT);
         liftMotor.setPower(0);
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  60,  60, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        encoderDrive(DRIVE_SPEED,  DRIVE_FWD_DISTANCE,  DRIVE_FWD_DISTANCE, 20.0);  // S1: Forward 47 Inches with 5 Sec timeout
 
      //   encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
      //   encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
+
+        sleep (1000);
 
         // Open Claw
         leftClaw.setPosition(MID_LEFT_SERVO-CLAW_OPEN_LIMIT_DELTA);

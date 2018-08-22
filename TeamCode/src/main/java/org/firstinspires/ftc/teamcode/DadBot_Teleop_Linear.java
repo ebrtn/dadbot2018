@@ -115,7 +115,7 @@ public class DadBot_Teleop_Linear extends LinearOpMode {
         // Drive motors
         double leftPower;
         double rightPower;
-        double powerFactor = DRIVE_SPEED_FACTOR_FAST;
+        double powerFactor = DRIVE_SPEED_FACTOR_SLOW;
 
         // Lift
         boolean liftUp;
